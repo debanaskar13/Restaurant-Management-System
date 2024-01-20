@@ -13,9 +13,9 @@ import lombok.*;
 @Builder
 public class UserDto {
     private int id;
+    private String username;
     @JsonIgnore
     private String password;
-    private String username;
     private String email;
     private String firstName;
     private String middleName;

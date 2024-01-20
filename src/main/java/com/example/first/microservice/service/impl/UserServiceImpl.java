@@ -20,8 +20,10 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public String createUser(UserDto user) {
-        return null;
+    public String createUser(UserDto userDto) {
+        User user = this.modelMapper.map(userDto, User.class);
+        this.userRepo.save(user);
+        return "User Created Successfully";
     }
 
     @Override
@@ -41,8 +43,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void deleteUserById(int userId) {
+    public String deleteUserById(int userId) {
         this.getUserById(userId);
         this.userRepo.deleteById(userId);
+        return "User Deleted Successfully";
     }
 }

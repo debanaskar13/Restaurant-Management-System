@@ -2,6 +2,9 @@ package com.example.first.microservice.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -17,7 +20,7 @@ import java.time.Instant;
 public class Role {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
 
@@ -27,18 +30,18 @@ public class Role {
     @Column(name = "description")
     private String description;
 
-    @Column(name = "slug")
+    @Column(name = "slug",nullable = false)
     private String slug;
 
     @Column(name = "active")
     private boolean active;
 
     @Column(nullable = false,name = "created_at")
-    @CreatedDate
+    @CreationTimestamp
     private Instant createdAt;
 
     @Column(name = "updated_at")
-    @LastModifiedDate
+    @UpdateTimestamp
     private Instant updatedAt;
 
     @Column(name = "content")
