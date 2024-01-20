@@ -42,6 +42,10 @@ public class User {
     @Column(name = "mobile_number",unique = true)
     private String mobileNumber;
 
+    @OneToOne
+    @JoinColumn(name = "role_id")
+    private Role role;
+
     @Column(name = "intro")
     private String intro;
 
