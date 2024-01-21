@@ -29,7 +29,11 @@ public class GlobalExceptionHandler {
                     .toList();
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
         }else if(ex instanceof DataIntegrityViolationException){
-            response = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST,"Bad Request !!");
+            String message = ex.getMessage();
+            if(message.contains("Duplicate entry") && message.contains("uq_email")){
+                message = "Email is already exists !!";
+            }
+            response = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST,message);
         }else if(ex instanceof RoleNotFoundException){
             response = ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND,ex.getMessage());
         }else{
