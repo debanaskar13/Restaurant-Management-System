@@ -1,35 +1,47 @@
 package com.example.first.microservice.service.impl;
 
 import com.example.first.microservice.dto.ItemDto;
+import com.example.first.microservice.exception.ItemNotFoundException;
+import com.example.first.microservice.exception.UserNotFoundException;
 import com.example.first.microservice.model.Item;
+import com.example.first.microservice.model.User;
 import com.example.first.microservice.repository.ItemRepository;
+import com.example.first.microservice.repository.UserRepository;
 import com.example.first.microservice.service.ItemService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class ItemServiceImpl implements ItemService {
 
     private final ModelMapper modelMapper;
-    private ItemRepository itemRepo;
+    private final ItemRepository itemRepo;
+    private final UserRepository userRepo;
 
     @Override
     public String createItem(ItemDto dto) {
-        return null;
+        User user = this.userRepo.findById(dto.getUserId()).orElseThrow(() -> new UserNotFoundException(dto.getUserId()));
+        User vendor = dto.getVendorId() != 0 ? this.userRepo.findById(dto.getVendorId()).orElseThrow(() -> new UserNotFoundException("Vendor not found")) : null;
+        Item item = itemDtoToItem(dto);
+        item.setUser(user);
+        item.setVendor(vendor);
+        this.itemRepo.save(item);
+        return "Item Saved Successfully";
     }
 
     @Override
     public List<ItemDto> getAllItem() {
-        return null;
+        return this.itemRepo.findAll().stream().map(this::itemToItemDto).collect(Collectors.toList());
     }
 
     @Override
     public ItemDto getItemById(int itemId) {
-        return null;
+        return this.itemRepo.findById(itemId).map(this::itemToItemDto).orElseThrow(() -> new ItemNotFoundException(itemId));
     }
 
     @Override
@@ -38,8 +50,9 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public void deleteItem(int id) {
-
+    public String deleteItem(int itemId) {
+        this.itemRepo.deleteById(itemId);
+        return "Item Deleted Successfully";
     }
 
     private Item itemDtoToItem(ItemDto dto){

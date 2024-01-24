@@ -10,6 +10,6 @@ public interface ItemService {
     List<ItemDto> getAllItem();
     ItemDto getItemById(int itemId);
     String UpdateItem(int itemId,ItemDto dto);
-    void deleteItem(int id);
+    String deleteItem(int id);
 
 }
