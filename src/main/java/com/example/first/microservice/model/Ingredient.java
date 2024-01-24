@@ -2,6 +2,8 @@ package com.example.first.microservice.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.Instant;
 
@@ -47,9 +49,11 @@ public class Ingredient {
     private int unit;
 
     @Column(name = "created_at",nullable = false)
+    @CreationTimestamp
     private Instant createdAt;
 
     @Column(name = "updated_at")
+    @UpdateTimestamp
     private Instant updatedAt;
 
     @Column(name = "content")
