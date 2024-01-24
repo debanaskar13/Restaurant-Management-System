@@ -1,6 +1,7 @@
 package com.example.first.microservice.service.impl;
 
 import com.example.first.microservice.dto.UserDto;
+import com.example.first.microservice.dto.UserUpdateDto;
 import com.example.first.microservice.exception.UserNotFoundException;
 import com.example.first.microservice.model.Role;
 import com.example.first.microservice.model.User;
@@ -12,16 +13,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.reflect.TypeToken;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.boot.json.GsonJsonParser;
 import org.springframework.stereotype.Service;
 
-import java.beans.BeanInfo;
-import java.beans.IntrospectionException;
-import java.beans.Introspector;
-import java.beans.PropertyDescriptor;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -61,9 +54,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String updateUserById(int userId, UserDto dto) {
+    public String updateUserById(int userId, UserUpdateDto dto) {
         User user = this.userRepo.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
-        modifyUser(user,dto);
+        User modifiedUser = modifyUser(user, dto);
+        this.userRepo.save(modifiedUser);
         return  "User Updated Successfully";
 
     }
@@ -85,25 +79,12 @@ public class UserServiceImpl implements UserService {
         return dto;
     }
 
-    private User modifyUser(User user,UserDto dto){
-        Gson gson = new Gson();
-        String userJson = gson.toJson(user);
-        String dtoJson = gson.toJson(dto);
-        Map<String,Object> userMap = gson.fromJson(userJson, new TypeToken<Map<String, Object>>() {
-        }.getType());
-        Map<String,Object> dtoMap = gson.fromJson(dtoJson, new TypeToken<Map<String, Object>>() {
-        }.getType());
-
-        for(Map.Entry<String,?> entry: userMap.entrySet()){
-            String key = entry.getKey();
-            Object value = dtoMap.get(key);
-            if(value instanceof String && value != null){
-                userMap.put(key,value);
-            }else if(value instanceof  Integer && Integer.parseInt(value + "") != 0){
-                userMap.put(key,value);
-            }
-        }
-        JsonElement jsonElement = gson.toJsonTree(userMap);
-        return gson.fromJson(jsonElement, User.class);
+    private User modifyUser(User user,UserUpdateDto dto){
+        user.setFirstName(dto.getFirstName()!=null ? dto.getFirstName() : user.getFirstName());
+        user.setMiddleName(dto.getMiddleName() != null ? dto.getMiddleName() : user.getMiddleName());
+        user.setLastName(dto.getLastName() != null ? dto.getLastName() : user.getLastName());
+        user.setIntro(dto.getIntro() != null ? dto.getIntro() : user.getIntro());
+        user.setProfile(dto.getProfile() != null ? dto.getProfile() : user.getProfile());
+        return user;
     }
 }

@@ -1,5 +1,6 @@
 package com.example.first.microservice.service;
 
+import com.example.first.microservice.dto.UserUpdateDto;
 import com.example.first.microservice.model.User;
 import com.example.first.microservice.dto.UserDto;
 
@@ -13,7 +14,7 @@ public interface UserService {
 
     public UserDto getUserById(int userId);
 
-    public String updateUserById(int userId,UserDto dto);
+    public String updateUserById(int userId, UserUpdateDto dto);
 
     public String deleteUserById(int userId);
 }

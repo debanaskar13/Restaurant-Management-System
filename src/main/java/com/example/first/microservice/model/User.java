@@ -6,6 +6,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.Instant;
 
@@ -17,6 +18,7 @@ import java.time.Instant;
 @Builder
 @Entity
 @Table(name = "users")
+@EntityListeners(AuditingEntityListener.class)
 public class User {
 
     @Id
@@ -54,12 +56,12 @@ public class User {
     @Column(name = "profile")
     private String profile;
 
-    @Column(name = "registered_at",nullable = false)
-    @CreationTimestamp
+    @Column(name = "registered_at")
+    @CreatedDate
     private Instant registeredAt;
 
-    @Column(name = "last_login_at",nullable = false)
-    @UpdateTimestamp
+    @Column(name = "last_login_at")
+    @LastModifiedDate
     private Instant lastLoginAt;
 
 }

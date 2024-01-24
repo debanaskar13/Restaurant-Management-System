@@ -1,6 +1,7 @@
 package com.example.first.microservice.controller;
 
 import com.example.first.microservice.dto.UserDto;
+import com.example.first.microservice.dto.UserUpdateDto;
 import com.example.first.microservice.model.User;
 import com.example.first.microservice.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -40,7 +41,7 @@ public class UserController {
     }
 
     @PutMapping("/{userId}")
-    public ResponseEntity<?> updateUser(@PathVariable int userId,@RequestBody UserDto userDto){
+    public ResponseEntity<?> updateUser(@PathVariable int userId,@RequestBody UserUpdateDto userDto){
         Map<String,String> response = new HashMap<>();
         response.put("message",this.userService.updateUserById(userId,userDto));
         return ResponseEntity.ok(response);
