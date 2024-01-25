@@ -13,6 +13,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.reflect.TypeToken;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,12 +27,14 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepo;
     private final ModelMapper modelMapper;
     private final RoleRepository roleRepo;
+    private final PasswordEncoder passwordEncoder;
 
 
     @Override
     public String createUser(UserDto userDto) {
         User user = this.userDtoToUser(userDto);
         Optional<Role> userRole = this.roleRepo.findByTitle(userDto.getRole());
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         if(userRole.isPresent()){
             user.setRole(userRole.get());
         }else{
