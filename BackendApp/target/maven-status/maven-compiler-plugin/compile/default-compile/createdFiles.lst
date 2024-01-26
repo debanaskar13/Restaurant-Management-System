@@ -1,0 +1,6 @@
+com/example/first/microservice/model/User.class
+com/example/first/microservice/FirstMicroserviceApplication.class
+com/example/first/microservice/repository/UserRepository.class
+com/example/first/microservice/model/User$UserBuilder.class
+com/example/first/microservice/service/UserService.class
+com/example/first/microservice/controller/UserController.class
