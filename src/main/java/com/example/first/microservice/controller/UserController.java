@@ -20,7 +20,6 @@ public class UserController {
 
     private final UserService userService;
 
-    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<?> createUser(@RequestBody UserDto userDto){
         Map<String,String> response = new HashMap<>();

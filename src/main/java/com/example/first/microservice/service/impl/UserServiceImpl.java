@@ -13,6 +13,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.reflect.TypeToken;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -45,12 +46,14 @@ public class UserServiceImpl implements UserService {
         return "User Created Successfully";
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Override
     public List<UserDto> getAllUser() {
         List<User> allUser = this.userRepo.findAll();
         return allUser.stream().map(this::userToUserDto).toList();
     }
 
+    @PreAuthorize("hasRole('USER')")
     @Override
     public UserDto getUserById(int userId) {
         return this.userRepo.findById(userId).map(this::userToUserDto).orElseThrow(() -> new UserNotFoundException(userId));
