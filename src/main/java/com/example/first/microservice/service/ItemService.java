@@ -9,7 +9,9 @@ public interface ItemService {
     String createItem(ItemDto dto);
     List<ItemDto> getAllItem();
     ItemDto getItemById(int itemId);
-    String UpdateItem(int itemId,ItemDto dto);
+
+    List<ItemDto> getItemByName(String itemName);
+    String updateItem(int itemId,ItemDto dto);
     String deleteItem(int id);
 
 }

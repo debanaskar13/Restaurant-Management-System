@@ -63,6 +63,10 @@ public class Item {
     @Column(name = "instructions")
     private String instructions;
 
+    @ManyToOne
+    @JoinColumn(name = "restaurant_id")
+    private Restaurant restaurant;
+
     @Column(name = "created_at",nullable = false)
     @CreationTimestamp
     private Instant createdAt;

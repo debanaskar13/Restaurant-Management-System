@@ -45,7 +45,17 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public String UpdateItem(int itemId, ItemDto dto) {
+    public List<ItemDto> getItemByName(String itemName) {
+        return this.itemRepo
+                .findByTitle(itemName)
+                .stream()
+                .map(this::itemToItemDto)
+                .toList();
+
+    }
+
+    @Override
+    public String updateItem(int itemId, ItemDto dto) {
         return null;
     }
 
@@ -60,6 +70,9 @@ public class ItemServiceImpl implements ItemService {
     }
 
     private ItemDto itemToItemDto(Item item){
-        return this.modelMapper.map(item, ItemDto.class);
+        ItemDto dto = this.modelMapper.map(item, ItemDto.class);
+        dto.setUserId(item.getUser().getId());
+        dto.setVendorId(item.getVendor().getId());
+        return dto;
     }
 }
