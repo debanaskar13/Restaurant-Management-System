@@ -2,7 +2,7 @@ import "./login.scss";
 import {LoginSocialGoogle} from "reactjs-social-login";
 import {GoogleLoginButton} from "react-social-login-buttons";
 import {useNavigate} from 'react-router-dom';
-import { Person2Rounded } from "@mui/icons-material";
+import { EmailSharp, Lock, Person2Rounded } from "@mui/icons-material";
 
 
 
@@ -25,8 +25,14 @@ function Login() {
 
           <div className="user_input">
             <form>
-              <input type="text" id="username" placeholder="Username"/>
-              <input type="password" id="password" placeholder="Password"/>
+              <div className="input-container">
+                <EmailSharp className="input-icon"/>
+                <input type="text" id="username" placeholder="Email"/>
+              </div>
+              <div className="input-container">
+                <Lock className="input-icon" />
+                <input type="password" id="password" placeholder="Password"/>
+              </div>
               <div>
                 <button className="login-btn">Login</button>
               </div>

@@ -5,16 +5,12 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-image: linear-gradient(to bottom right,rgb(88, 97, 172),rgb(135, 19, 212));
+    background-image: linear-gradient(to bottom right,rgb(78, 93, 236),rgb(178, 58, 189));
     color: white;
-
-    // &>div{
-    //     width: 400px;
-    // }
 
     .login-card{
         width: 550px;
-        background-image: linear-gradient(to bottom right, rgb(135, 19, 212),rgb(88, 97, 172));
+        background-image: linear-gradient(to bottom right,rgb(168, 82, 218) ,rgb(78, 93, 236));
         border-radius: 15px;
         padding: 40px;
         box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
@@ -59,20 +55,36 @@
 
     .user_input{
         form{
-            &>input{
-                width: 100%;
-                margin: 5px 0px 5px 0px;
-                padding:10px 12px;
-                margin: 10px 0;
-                font-size: 1.6rem;
-                border-radius: 7px;
-                border: none;
-                color: white;
-                background-color: rgb(122, 64, 214);
+            .input-container{
+                position: relative;
+
+                .input-icon{
+                    position: absolute;
+                    left: 15px;
+                    font-size: 30px;
+                }
+
+
+                &>input{
                     
-                &:focus{
-                    outline: none;
-                    border: 2px solid white;
+                    width: 100%;
+                    margin: 5px 0px 5px 0px;
+                    padding:10px 55px;
+                    margin: 10px 0;
+                    font-size: 1.6rem;
+                    border-radius: 30px;
+                    border: none;
+                    color: white;
+                    background-color: rgb(122, 64, 214);
+                    box-shadow: rgb(0, 0, 0, 0.20) 0px 5px 15px;
+                        
+                    &:focus{
+                        outline: none;
+                    }
+
+                    &::placeholder{
+                        color: white;
+                    }
                 }
             }
             
@@ -94,7 +106,18 @@
         
                     cursor: pointer;
                     text-transform: uppercase;
+                
+                    &:focus{
+                        outline: none;
+                    }
+
+                    &:hover{
+                        filter: brightness(80%);
+                    }
+
                 }
+
+
             }
             
         }
@@ -117,7 +140,7 @@
     }
 
     .new-account{
-        margin-top: 7rem;
+        margin-top: 4rem;
 
         .line-break{
             color: white;

@@ -1,4 +1,4 @@
-import { Person2Rounded } from "@mui/icons-material";
+import { EmailRounded, Lock, PasswordRounded, Person2Rounded, Person3Outlined, Person3Rounded } from "@mui/icons-material";
 import "./signup.scss";
 
 
@@ -20,9 +20,18 @@ function Signup() {
 
             <div className="user_input">
                 <form>
-                    <input type="text" id="name" placeholder="Name"/>
-                    <input type="email" id="email" placeholder="Email"/>
-                    <input type="password" id="password" placeholder="Password"/>
+                    <div className="input-container">
+                        <Person3Outlined className="input-icon" />
+                        <input type="text" id="name" placeholder="Name"/>
+                    </div>
+                    <div className="input-container">
+                        <EmailRounded className="input-icon" />
+                        <input type="email" id="email" placeholder="Email"/>
+                    </div>
+                    <div className="input-container">
+                        <Lock className="input-icon" />
+                        <input type="password" id="password" placeholder="Password"/>
+                    </div>
                     <div className="terms-and-conditions">
                         <input type="checkbox" id="terms" /> I read and agree to <a href="#">Terms & Conditions</a>
                     </div>
