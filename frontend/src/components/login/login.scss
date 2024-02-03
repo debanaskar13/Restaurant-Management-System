@@ -1,0 +1,141 @@
+.container{
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-image: linear-gradient(to bottom right,rgb(88, 97, 172),rgb(135, 19, 212));
+    color: white;
+
+    // &>div{
+    //     width: 400px;
+    // }
+
+    .login-card{
+        width: 550px;
+        background-image: linear-gradient(to bottom right, rgb(135, 19, 212),rgb(88, 97, 172));
+        border-radius: 15px;
+        padding: 40px;
+        box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    }
+
+    .header{
+        font-size: 2rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 1.5rem;
+        
+        .header-icon{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 3.5rem;
+            width: 3.5rem;
+            border: 1px solid white;
+            border-radius: 50%;
+
+            .person-icon{
+                font-size: 40px;
+            }
+        }
+
+        .text-sign-in{
+            width: 100%;
+            display: flex;
+            justify-content: space-around;
+
+            .before-sign-in{
+                width: 30%;
+                border-top: 1px solid white;
+                transform: translateY(50%);
+            }
+            
+        }
+
+    }
+
+    .user_input{
+        form{
+            &>input{
+                width: 100%;
+                margin: 5px 0px 5px 0px;
+                padding:10px 12px;
+                margin: 10px 0;
+                font-size: 1.6rem;
+                border-radius: 7px;
+                border: none;
+                color: white;
+                background-color: rgb(122, 64, 214);
+                    
+                &:focus{
+                    outline: none;
+                    border: 2px solid white;
+                }
+            }
+            
+            div{
+
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                button{
+                    width: 60%;
+                    padding: 10px 12px;
+                    margin: 10px 0;
+                    font-size: 1.2rem;
+                    border-radius: 30px;
+                    border: none;
+                    color: rgb(43, 42, 42);
+                    background-color: rgba(255, 166, 0, 0.945);
+        
+                    cursor: pointer;
+                    text-transform: uppercase;
+                }
+            }
+            
+        }
+
+    }
+
+    .remember-forgot{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 40px;
+        padding: 0 2px;
+
+        .forgot-password{
+            a{
+                text-decoration: none;
+                color: white;
+            }
+        }
+    }
+
+    .new-account{
+        margin-top: 7rem;
+
+        .line-break{
+            color: white;
+            width: 100%;
+            margin: 1rem 0;
+        }
+
+        div{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            a{
+                color: orange;
+                text-decoration: none;
+                margin: 0 4px;
+            }
+        }
+    }
+  
+    
+}
