@@ -1,12 +1,21 @@
 import "./login.scss";
 import {LoginSocialGoogle} from "reactjs-social-login";
 import {GoogleLoginButton} from "react-social-login-buttons";
-import {useNavigate} from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import { EmailSharp, Lock, Person2Rounded } from "@mui/icons-material";
+import { useState } from "react";
 
 
 
 function Login() {
+
+  const [email,setEmail] = useState();
+  const [password,setPassword] = useState();
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+    console.log(email,password)
+  }
 
   return (
     <>
@@ -24,17 +33,17 @@ function Login() {
           </div>
 
           <div className="user_input">
-            <form>
+            <form onSubmit={handleLogin}>
               <div className="input-container">
                 <EmailSharp className="input-icon"/>
-                <input type="text" id="username" placeholder="Email"/>
+                <input type="text" id="username" onChange={e => setEmail(e.target.value)} placeholder="Email"/>
               </div>
               <div className="input-container">
                 <Lock className="input-icon" />
-                <input type="password" id="password" placeholder="Password"/>
+                <input type="password" id="password" onChange={e => setPassword(e.target.value)} placeholder="Password"/>
               </div>
               <div>
-                <button className="login-btn">Login</button>
+                <button type="submit" className="login-btn">Login</button>
               </div>
 
             </form>
@@ -49,7 +58,7 @@ function Login() {
 
           <div className="new-account">
             <hr className="line-break"/>
-            <div>Not a member?  <a href="/signup">Create Account </a></div>
+            <div>Not a member?  <Link to={"/signup"}>Create Account </Link></div>
           </div>
         </div>
       </div>

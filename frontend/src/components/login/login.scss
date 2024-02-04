@@ -103,6 +103,7 @@
                     border: none;
                     color: rgb(43, 42, 42);
                     background-color: rgba(255, 166, 0, 0.945);
+                    
         
                     cursor: pointer;
                     text-transform: uppercase;
@@ -114,6 +115,11 @@
                     &:hover{
                         filter: brightness(80%);
                     }
+
+                    &:disabled{
+                        background-color: rgba(182, 182, 182, 0.945);
+                    }
+
 
                 }
 
@@ -157,6 +163,34 @@
                 text-decoration: none;
                 margin: 0 4px;
             }
+        }
+    }
+
+    .hide{
+        display: none;
+    }
+
+    .err_deatils{
+
+        p.instructions{
+            width: 100%;
+            // border: 1px solid red;
+            padding: 4px 5px;
+            display: flex;
+            align-items: center;
+
+            .err_icon{
+                width: 40px;
+                height: 40px;
+                // border: 1px solid red;
+            }
+
+        }
+    
+        p.offscreen{
+            position: absolute;
+            opacity: 0;
+            top: 0;
         }
     }
   
