@@ -86,6 +86,30 @@
                         color: white;
                     }
                 }
+
+                .valid , .invalid{
+                    position: absolute;
+                    right: -35px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+
+                    &__icon{
+                        font-size: 2rem;
+                    }
+                }
+
+                .valid{
+                    &__icon{
+                        color: rgb(0, 255, 0);
+                    }
+                }
+
+                .invalid{
+                    &__icon{
+                        color: rgb(255, 0, 0);
+                    }
+                }
             }
             
             div{

@@ -1,46 +1,19 @@
-import { CancelRounded, Check, CheckCircle, CheckCircleRounded, Email, EmailRounded, InfoRounded, Lock, PasswordRounded, Person2Rounded, Person3Outlined, Person3Rounded, X } from "@mui/icons-material";
+import { CancelRounded, Check, CheckCircle, CheckCircleRounded, Email, EmailRounded, InfoRounded, Lock, PasswordRounded, Person2Rounded, Person3Outlined, Person3Rounded, Visibility, VisibilityOff, X } from "@mui/icons-material";
 import "./signup.scss";
 
 import { Link , useNavigate } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import axios from "../../api/Axios";
-import {ToastContainer , toast, Bounce} from "react-toastify";
+import {ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import {showToastMessage} from "../../utils/Utils";
+import { ErrorIcon, VisibilityIcon } from "../component_util/ComponentUtil";
 
 const USER_REGEX = /^[a-zA-Z][a-zA-Z0-9- ]{3,23}$/;
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 const EMAIL_REGEX = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/
 
 function Signup() {
-
-    const showToastMessage = {
-        success: (message) => {
-            toast.success(message, {
-                position: "top-right",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-                transition: Bounce,
-                })
-            }, 
-        failure: (message) => {
-            toast.error(message, {
-                position: "top-right",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-                transition: Bounce,
-                })
-            }
-    }
 
     const navigate = useNavigate();
 
@@ -66,6 +39,8 @@ function Signup() {
     const [matchPwdFocus, setMatchPwdFocus] = useState(false);
 
     const [agreeCheck, setAgreeCheck] = useState(false);
+    const [pwdHidden,setPwdHidden] = useState(true);
+    const [matchPwdHidden,setMatchPwdHidden] = useState(true);
 
     const [errMsg, setErrMsg] = useState('');
     const [success, setSuccess] = useState(false);
@@ -132,7 +107,6 @@ function Signup() {
 
             setTimeout(navigate,6000, "/login");
 
-            // navigate("/login");
         } catch (error) {
 
             message = error.response.data.detail;
@@ -181,12 +155,8 @@ function Signup() {
                                     onFocus={() => setUserFocus(true)}
                                     onBlur={() => setUserFocus(false)}
                                 />
-                                <span className={validName ? "valid" : "hide"}>
-                                    <CheckCircleRounded />
-                                </span>
-                                <span className={validName || !user ? "hide" : "invalid"}>
-                                    <CancelRounded />
-                                </span>
+
+                                <ErrorIcon checkIconValidation={validName} cancelIconValidation={validName || !user}/>
                             </div>
                             <div className="err_deatils">
                                 <p id="usernamenote" className={userFocus && user && !validName ? "instructions" : "offscreen"}>
@@ -213,12 +183,8 @@ function Signup() {
                                     onFocus={() => setEmailFocus(true)}
                                     onBlur={() => setEmailFocus(false)}
                                 />
-                                <span className={validEmail ? "valid" : "hide"}>
-                                    <CheckCircleRounded />
-                                </span>
-                                <span className={validEmail || !email ? "hide" : "invalid"}>
-                                    <CancelRounded />
-                                </span>
+
+                                <ErrorIcon checkIconValidation={validEmail} cancelIconValidation={validEmail || !email}/>
 
                             </div>
                             <div className="err_deatils">
@@ -233,7 +199,7 @@ function Signup() {
                             <div className="input-container">
                                 <Lock className="input-icon" />
                                 <input
-                                    type="password"
+                                    type={pwdHidden ? "password" : "text"}
                                     id="password"
                                     placeholder="Password"
                                     onChange={(e) => setPwd(e.target.value)}
@@ -244,12 +210,12 @@ function Signup() {
                                     onFocus={() => setPwdFocus(true)}
                                     onBlur={() => setPwdFocus(false)}
                                 />
-                                <span className={validPwd ? "valid" : "hide"}>
-                                    <CheckCircleRounded />
-                                </span>
-                                <span className={validPwd || !pwd ? "hide" : "invalid"}>
-                                    <CancelRounded />
-                                </span>
+                                {/* -------------------------- */}
+
+                                <VisibilityIcon passwordHidden={pwdHidden} setPasswordHidden={setPwdHidden} />
+
+                                <ErrorIcon checkIconValidation={validPwd} cancelIconValidation={validPwd || !pwd}/> 
+                                
                             </div>
                             <div className="err_deatils">
                                 <p id="pwdnote" className={pwdFocus && !validPwd ? "instructions" : "offscreen"}>
@@ -267,7 +233,7 @@ function Signup() {
                             <div className="input-container">
                                 <Lock className="input-icon" />
                                 <input
-                                    type="password"
+                                    type={ matchPwdHidden ? "password" : "text"}
                                     id="confirm_password"
                                     placeholder="Confirm Password"
                                     onChange={(e) => setMatchPwd(e.target.value)}
@@ -278,12 +244,11 @@ function Signup() {
                                     onFocus={() => setMatchPwdFocus(true)}
                                     onBlur={() => setMatchPwdFocus(false)}
                                 />
-                                <span className={validMatchPwd && matchPwd ? "valid" : "hide"}>
-                                    <CheckCircleRounded />
-                                </span>
-                                <span className={validMatchPwd || !matchPwd ? "hide" : "invalid"}>
-                                    <CancelRounded />
-                                </span>
+
+                                <VisibilityIcon passwordHidden={matchPwdHidden} setPasswordHidden={setMatchPwdHidden} />
+
+                                <ErrorIcon checkIconValidation={validMatchPwd && matchPwd} cancelIconValidation={validMatchPwd || !matchPwd}/>
+
                             </div>
                             <div className="err_deatils">
                                 <p id="confirmpwdnote" className={matchPwdFocus && !validMatchPwd ? "instructions" : "offscreen"}>
@@ -320,5 +285,7 @@ function Signup() {
         </>
     )
 }
+
+
 
 export default Signup
