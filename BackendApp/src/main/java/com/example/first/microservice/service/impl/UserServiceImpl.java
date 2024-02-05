@@ -2,6 +2,7 @@ package com.example.first.microservice.service.impl;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -34,10 +35,10 @@ public class UserServiceImpl implements UserService {
         Optional<Role> userRole = this.roleRepo.findByTitle(userDto.getRole());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         if (userRole.isPresent()) {
-            user.setRole(userRole.get());
+            user.setRole(Set.of(userRole.get()));
         } else {
             userRole = this.roleRepo.findByTitle("USER");
-            user.setRole(userRole.get());
+            user.setRole(Set.of(userRole.get()));
         }
         this.userRepo.save(user);
         return "User Created Successfully";
@@ -77,7 +78,8 @@ public class UserServiceImpl implements UserService {
 
     public UserDto userToUserDto(User user) {
         UserDto dto = this.modelMapper.map(user, UserDto.class);
-        dto.setRole(user.getRole().getTitle());
+        String roles = user.getRole().stream().map(r -> r.getTitle()).toList().toString();
+        dto.setRole(roles);
         return dto;
     }
 

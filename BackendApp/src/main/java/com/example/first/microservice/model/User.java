@@ -1,19 +1,33 @@
 package com.example.first.microservice.model;
 
-import jakarta.persistence.*;
-import lombok.*;
+import java.time.Instant;
+import java.util.Collection;
+import java.util.Set;
+
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.time.Instant;
-import java.util.Collection;
-import java.util.List;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
@@ -22,7 +36,6 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "users")
 @EntityListeners(AuditingEntityListener.class)
 public class User implements UserDetails {
 
@@ -30,45 +43,42 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    @Column(name = "password",nullable = false)
+    @Column(name = "password", nullable = false)
     private String password;
 
-    @Column(name = "email",nullable = false,unique = true)
+    @Column(name = "email", nullable = false, unique = true)
     private String email;
 
-    @Column(name = "first_name",nullable = false)
+    @Column(name = "first_name", nullable = false)
     private String firstName;
 
-    @Column(name = "last_name",nullable = false)
+    @Column(name = "last_name", nullable = false)
     private String lastName;
 
-    @Column(name = "mobile_number",unique = true)
+    @Column(name = "mobile_number")
     private String mobileNumber;
 
-    @OneToOne
-    @JoinColumn(name = "role_id")
-    private Role role;
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> role;
 
-    @Column(name = "intro")
     private String intro;
 
-    @Column(name = "profile")
     private String profile;
 
-    @Column(name = "active")
     private boolean active;
 
     @Column(name = "registered_at")
-    @CreatedDate
+    @CreationTimestamp
     private Instant registeredAt;
 
     @Column(name = "last_login_at")
-    @LastModifiedDate
+    @UpdateTimestamp
     private Instant lastLoginAt;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(role.getTitle()));
+        return role.stream().map((r) -> new SimpleGrantedAuthority(r.getTitle())).toList();
     }
 
     @Override

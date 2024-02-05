@@ -1,6 +1,7 @@
 import axios from 'axios';
 
+console.log(process.env.REACT_APP_BACKEND_BASE_URL)
 
 export default axios.create({
-    baseUrl: process.env.BACKEND_BASE_URL
+    baseURL: process.env.REACT_APP_BACKEND_BASE_URL
 })

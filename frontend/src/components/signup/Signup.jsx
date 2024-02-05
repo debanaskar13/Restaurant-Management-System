@@ -1,14 +1,23 @@
 import { CancelRounded, Check, CheckCircle, CheckCircleRounded, Email, EmailRounded, InfoRounded, Lock, PasswordRounded, Person2Rounded, Person3Outlined, Person3Rounded, X } from "@mui/icons-material";
 import "./signup.scss";
-import { Link } from "react-router-dom";
+import { Link , useNavigate } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import axios from "../../api/Axios";
+import {ToastContainer , toast} from "react-toastify";
 
 const USER_REGEX = /^[a-zA-Z][a-zA-Z0-9- ]{3,23}$/;
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 const EMAIL_REGEX = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/
 
 function Signup() {
+
+    const showToastMessage = () => {
+        toast.success("Registered Successfully ",{
+            position: toast.POSITION.TOP_RIGHT
+        });
+    }
+
+    const navigate = useNavigate();
 
 
     const userRef = useRef();
@@ -71,7 +80,7 @@ function Signup() {
         const validPwd = PWD_REGEX.test(pwd);
         const validMatchPwd = pwd === matchPwd;
 
-        if (!validName || !validEmail || !validPwd || !validMatchPwd) {
+        if (!validName || !validEmail || !validPwd || !validMatchPwd || !agreeCheck) {
             setErrMsg("Please check your input!");
             return;
         }
@@ -89,14 +98,17 @@ function Signup() {
             }
         }));
 
-        console.log(response);
+        
         setSuccess(true);
+
+        navigate("/login");
 
     }
 
     return (
 
         <>
+            <ToastContainer />
             <section className='container'>
                 <p ref={errRef} className={errMsg ? "errMsg" : "offscreen"} aria-live="assertive" >{errMsg}</p>
                 <div className="login-card">
