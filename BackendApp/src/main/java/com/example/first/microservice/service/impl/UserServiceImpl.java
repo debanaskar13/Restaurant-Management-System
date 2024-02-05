@@ -1,5 +1,13 @@
 package com.example.first.microservice.service.impl;
 
+import java.util.List;
+import java.util.Optional;
+
+import org.modelmapper.ModelMapper;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
 import com.example.first.microservice.dto.UserDto;
 import com.example.first.microservice.dto.UserUpdateDto;
 import com.example.first.microservice.exception.UserNotFoundException;
@@ -8,18 +16,8 @@ import com.example.first.microservice.model.User;
 import com.example.first.microservice.repository.RoleRepository;
 import com.example.first.microservice.repository.UserRepository;
 import com.example.first.microservice.service.UserService;
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.reflect.TypeToken;
-import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
@@ -30,15 +28,14 @@ public class UserServiceImpl implements UserService {
     private final RoleRepository roleRepo;
     private final PasswordEncoder passwordEncoder;
 
-
     @Override
     public String createUser(UserDto userDto) {
         User user = this.userDtoToUser(userDto);
         Optional<Role> userRole = this.roleRepo.findByTitle(userDto.getRole());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        if(userRole.isPresent()){
+        if (userRole.isPresent()) {
             user.setRole(userRole.get());
-        }else{
+        } else {
             userRole = this.roleRepo.findByTitle("USER");
             user.setRole(userRole.get());
         }
@@ -46,17 +43,16 @@ public class UserServiceImpl implements UserService {
         return "User Created Successfully";
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
     @Override
     public List<UserDto> getAllUser() {
         List<User> allUser = this.userRepo.findAll();
         return allUser.stream().map(this::userToUserDto).toList();
     }
 
-    @PreAuthorize("hasRole('USER')")
     @Override
     public UserDto getUserById(int userId) {
-        return this.userRepo.findById(userId).map(this::userToUserDto).orElseThrow(() -> new UserNotFoundException(userId));
+        return this.userRepo.findById(userId).map(this::userToUserDto)
+                .orElseThrow(() -> new UserNotFoundException(userId));
     }
 
     @Override
@@ -64,7 +60,7 @@ public class UserServiceImpl implements UserService {
         User user = this.userRepo.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
         User modifiedUser = modifyUser(user, dto);
         this.userRepo.save(modifiedUser);
-        return  "User Updated Successfully";
+        return "User Updated Successfully";
 
     }
 
@@ -75,19 +71,18 @@ public class UserServiceImpl implements UserService {
         return "User Deleted Successfully";
     }
 
-    private User userDtoToUser(UserDto dto){
+    private User userDtoToUser(UserDto dto) {
         return this.modelMapper.map(dto, User.class);
     }
 
-    public UserDto userToUserDto(User user){
+    public UserDto userToUserDto(User user) {
         UserDto dto = this.modelMapper.map(user, UserDto.class);
         dto.setRole(user.getRole().getTitle());
         return dto;
     }
 
-    public User modifyUser(User user,UserUpdateDto dto){
-        user.setFirstName(dto.getFirstName()!=null ? dto.getFirstName() : user.getFirstName());
-        user.setMiddleName(dto.getMiddleName() != null ? dto.getMiddleName() : user.getMiddleName());
+    public User modifyUser(User user, UserUpdateDto dto) {
+        user.setFirstName(dto.getFirstName() != null ? dto.getFirstName() : user.getFirstName());
         user.setLastName(dto.getLastName() != null ? dto.getLastName() : user.getLastName());
         user.setIntro(dto.getIntro() != null ? dto.getIntro() : user.getIntro());
         user.setProfile(dto.getProfile() != null ? dto.getProfile() : user.getProfile());

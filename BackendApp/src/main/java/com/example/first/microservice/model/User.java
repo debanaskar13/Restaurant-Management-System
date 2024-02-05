@@ -27,11 +27,8 @@ import java.util.List;
 public class User implements UserDetails {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
-
-    @Column(name = "username",nullable = false,unique = true)
-    private String username;
 
     @Column(name = "password",nullable = false)
     private String password;
@@ -41,9 +38,6 @@ public class User implements UserDetails {
 
     @Column(name = "first_name",nullable = false)
     private String firstName;
-
-    @Column(name = "middle_name")
-    private String middleName;
 
     @Column(name = "last_name",nullable = false)
     private String lastName;
@@ -75,6 +69,11 @@ public class User implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.getTitle()));
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
     }
 
     @Override

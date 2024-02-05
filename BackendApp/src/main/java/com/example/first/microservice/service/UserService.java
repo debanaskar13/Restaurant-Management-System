@@ -1,11 +1,9 @@
 package com.example.first.microservice.service;
 
-import com.example.first.microservice.dto.UserUpdateDto;
-import com.example.first.microservice.model.User;
-import com.example.first.microservice.dto.UserDto;
-import org.springframework.security.access.prepost.PreAuthorize;
-
 import java.util.List;
+
+import com.example.first.microservice.dto.UserDto;
+import com.example.first.microservice.dto.UserUpdateDto;
 
 public interface UserService {
 

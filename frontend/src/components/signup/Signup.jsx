@@ -2,12 +2,14 @@ import { CancelRounded, Check, CheckCircle, CheckCircleRounded, Email, EmailRoun
 import "./signup.scss";
 import { Link } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
+import axios from "axios";
 
 const USER_REGEX = /^[a-zA-Z][a-zA-Z0-9- ]{3,23}$/;
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 const EMAIL_REGEX = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/
 
 function Signup() {
+
 
     const userRef = useRef();
     const errRef = useRef();
@@ -74,7 +76,16 @@ function Signup() {
             return;
         }
 
-        console.log(user,email,pwd);
+        const body = {
+            email: email,
+            password: pwd,
+            firstName:  user.split(' ')[0],
+            lastName:   user.split(' ')[1]
+        }
+
+        const response = (await axios.post("http://localhost:8081/signup",body)).data;
+
+        console.log(response);
         setSuccess(true);
 
     }

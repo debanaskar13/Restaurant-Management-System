@@ -20,11 +20,6 @@ import java.time.Instant;
 public class UserDto {
     private int id;
 
-    @NotBlank(message = "username can't be empty")
-    @NotNull(message = "username can't be Null")
-    @Size(min = 3,max = 30,message = "username should be within minimum 5 and maximum 30 characters")
-    private String username;
-
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @NotBlank(message = "Password can't be empty")
     @NotNull(message = "Password can't be Null")
@@ -41,7 +36,6 @@ public class UserDto {
     @Size(min = 3,max = 50,message = "First Name should be within minimum 3 and maximum 50 characters")
     private String firstName;
 
-    private String middleName;
     private String role;
 
     @NotBlank(message = "Last Name can't be empty")
@@ -49,9 +43,6 @@ public class UserDto {
     @Size(min = 3,max = 50,message = "Last Name should be within minimum 3 and maximum 50 characters")
     private String lastName;
 
-    @NotBlank(message = "Mobile Number can't be empty")
-    @NotNull(message = "Mobile Number can't be Null")
-    @Size(min = 10,max = 10,message = "Mobile Number should be 10 digits")
     private String mobileNumber;
 
     private String intro;
