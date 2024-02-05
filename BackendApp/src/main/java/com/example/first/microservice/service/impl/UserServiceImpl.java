@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +30,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public String createUser(UserDto userDto) {
         User user = this.userDtoToUser(userDto);
+        System.out.println(user);
         Optional<Role> userRole = this.roleRepo.findByTitle(userDto.getRole());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         if (userRole.isPresent()) {
