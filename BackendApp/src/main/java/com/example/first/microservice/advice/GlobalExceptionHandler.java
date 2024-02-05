@@ -17,28 +17,30 @@ import java.util.List;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(value = Exception.class)
-    public ResponseEntity<?> handleGlobalException(Exception ex){
+    public ResponseEntity<?> handleGlobalException(Exception ex) {
         ProblemDetail response;
-        if(ex instanceof UserNotFoundException){
-            response = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST,ex.getMessage());
-        }else if(ex instanceof MethodArgumentNotValidException){
+        if (ex instanceof UserNotFoundException) {
+            response = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, ex.getMessage());
+        } else if (ex instanceof MethodArgumentNotValidException) {
             List<String> errors = ((MethodArgumentNotValidException) ex).getBindingResult()
                     .getFieldErrors()
                     .stream()
                     .map(FieldError::getDefaultMessage)
                     .toList();
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
-        }else if(ex instanceof DataIntegrityViolationException){
+        } else if (ex instanceof DataIntegrityViolationException) {
             String message = ex.getMessage();
-            if(message.contains("Duplicate entry") && message.contains("uq_email")){
+            if (message.contains("Duplicate entry") && message.contains("uq_email")) {
                 message = "Email is already exists !!";
             }
-            response = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST,message);
-        }else if(ex instanceof RoleNotFoundException){
-            response = ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND,ex.getMessage());
-        }else{
-            response = ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR,ex.getMessage());
-//            ex.printStackTrace();
+            // System.out.println(message);
+            response = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, message);
+        } else if (ex instanceof RoleNotFoundException) {
+            response = ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, ex.getMessage());
+        } else {
+            response = ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
+            // System.out.println(ex);
+            // ex.printStackTrace();
         }
         return ResponseEntity.status(response.getStatus()).body(response);
     }

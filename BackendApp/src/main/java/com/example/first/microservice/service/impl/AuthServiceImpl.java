@@ -9,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
-
 @Service
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
@@ -17,9 +16,9 @@ public class AuthServiceImpl implements AuthService {
     private final ModelMapper modelMapper;
     private final UserService userService;
 
-
     @Override
     public AuthResponse signup(UserDto dto) {
+        dto.setActive(true);
         String message = this.userService.createUser(dto);
         return AuthResponse.builder().message(message).build();
     }

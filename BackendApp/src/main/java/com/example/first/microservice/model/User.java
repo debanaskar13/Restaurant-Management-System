@@ -22,6 +22,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -37,6 +39,7 @@ import lombok.ToString;
 @Builder
 @Entity
 @EntityListeners(AuditingEntityListener.class)
+@Table(uniqueConstraints = { @UniqueConstraint(name = "uq_email", columnNames = { "email" }) })
 public class User implements UserDetails {
 
     @Id

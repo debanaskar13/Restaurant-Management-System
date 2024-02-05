@@ -1,9 +1,11 @@
 import { CancelRounded, Check, CheckCircle, CheckCircleRounded, Email, EmailRounded, InfoRounded, Lock, PasswordRounded, Person2Rounded, Person3Outlined, Person3Rounded, X } from "@mui/icons-material";
 import "./signup.scss";
+
 import { Link , useNavigate } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import axios from "../../api/Axios";
-import {ToastContainer , toast} from "react-toastify";
+import {ToastContainer , toast, Bounce} from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const USER_REGEX = /^[a-zA-Z][a-zA-Z0-9- ]{3,23}$/;
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
@@ -11,10 +13,33 @@ const EMAIL_REGEX = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/
 
 function Signup() {
 
-    const showToastMessage = () => {
-        toast.success("Registered Successfully ",{
-            position: toast.POSITION.TOP_RIGHT
-        });
+    const showToastMessage = {
+        success: (message) => {
+            toast.success(message, {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+                transition: Bounce,
+                })
+            }, 
+        failure: (message) => {
+            toast.error(message, {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+                transition: Bounce,
+                })
+            }
     }
 
     const navigate = useNavigate();
@@ -91,17 +116,29 @@ function Signup() {
             firstName: user.split(' ')[0],
             lastName: user.split(' ')[1]
         }
+        let message;
 
-        const response = (await axios.post("/auth/register", JSON.stringify(body), {
-            headers: {
-                "Content-Type": "application/json"
-            }
-        }));
+        try {
+            const response = (await axios.post("/auth/register", JSON.stringify(body), {
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            }));
 
-        
-        setSuccess(true);
+            message = "Registered Successfully Please Login";
 
-        navigate("/login");
+            showToastMessage.success(message);
+            setSuccess(true);
+
+            setTimeout(navigate,6000, "/login");
+
+            // navigate("/login");
+        } catch (error) {
+
+            message = error.response.data.detail;
+
+            showToastMessage.failure(message);
+        }
 
     }
 
@@ -138,6 +175,7 @@ function Signup() {
                                     placeholder="Name"
                                     autoComplete="off"
                                     onChange={(e) => setUser(e.target.value)}
+                                    value={user}
                                     aria-invalid={validName ? "false" : "true"}
                                     aria-describedby="usernamenote"
                                     onFocus={() => setUserFocus(true)}
@@ -168,6 +206,7 @@ function Signup() {
                                     placeholder="Email"
                                     autoComplete="off"
                                     onChange={(e) => setEmail(e.target.value)}
+                                    value={email}
                                     required
                                     aria-invalid={validEmail ? "false" : "true"}
                                     aria-describedby="emailnote"
@@ -198,6 +237,7 @@ function Signup() {
                                     id="password"
                                     placeholder="Password"
                                     onChange={(e) => setPwd(e.target.value)}
+                                    value={pwd}
                                     required
                                     aria-invalid={validPwd ? "false" : "true"}
                                     aria-describedby="pwdnote"
@@ -231,6 +271,7 @@ function Signup() {
                                     id="confirm_password"
                                     placeholder="Confirm Password"
                                     onChange={(e) => setMatchPwd(e.target.value)}
+                                    value={matchPwd}
                                     required
                                     aria-invalid={validMatchPwd ? "false" : "true"}
                                     aria-describedby="confirmpwdnote"
@@ -253,6 +294,7 @@ function Signup() {
                             <div className="terms-and-conditions">
                                 <input
                                     type="checkbox"
+                                    value={agreeCheck}
                                     id="terms"
                                     onClick={(e) => setAgreeCheck(!agreeCheck)}
 
