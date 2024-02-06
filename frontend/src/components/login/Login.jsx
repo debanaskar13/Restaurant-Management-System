@@ -1,20 +1,30 @@
 import "./login.scss";
-import {LoginSocialGoogle} from "reactjs-social-login";
-import {GoogleLoginButton} from "react-social-login-buttons";
-import {Link, useNavigate} from 'react-router-dom';
+import { LoginSocialGoogle } from "reactjs-social-login";
+import { GoogleLoginButton } from "react-social-login-buttons";
+import { Link, useNavigate } from 'react-router-dom';
 import { EmailSharp, Lock, Person2Rounded } from "@mui/icons-material";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 
 
 function Login() {
 
-  const [email,setEmail] = useState();
-  const [password,setPassword] = useState();
+  const emailRef = useRef();
+  const errRef = useRef();
+
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
+
+
+  useEffect(() => {
+    emailRef.current.focus();
+  }, []);
+
+
 
   const handleLogin = (e) => {
     e.preventDefault();
-    console.log(email,password)
+    console.log(email, password)
   }
 
   return (
@@ -23,7 +33,7 @@ function Login() {
         <div className="login-card">
           <div className="header">
             <div className="header-icon">
-              <Person2Rounded className="person-icon"/>
+              <Person2Rounded className="person-icon" />
             </div>
             <div className="text-sign-in">
               <span className="before-sign-in"></span>
@@ -35,12 +45,12 @@ function Login() {
           <div className="user_input">
             <form onSubmit={handleLogin}>
               <div className="input-container">
-                <EmailSharp className="input-icon"/>
-                <input type="text" id="username" onChange={e => setEmail(e.target.value)} placeholder="Email"/>
+                <EmailSharp className="input-icon" />
+                <input ref={emailRef} type="email" id="email" onChange={e => setEmail(e.target.value)} placeholder="Email" />
               </div>
               <div className="input-container">
                 <Lock className="input-icon" />
-                <input type="password" id="password" onChange={e => setPassword(e.target.value)} placeholder="Password"/>
+                <input type="password" id="password" onChange={e => setPassword(e.target.value)} placeholder="Password" />
               </div>
               <div>
                 <button type="submit" className="login-btn">Login</button>
@@ -51,13 +61,13 @@ function Login() {
 
           <div className="remember-forgot">
             <div className="remember-me">
-              <input type="checkbox" id="remember_me"/> Remember Me
+              <input type="checkbox" id="remember_me" /> Remember Me
             </div>
             <div className="forgot-password"><a href="#">Forgot Password?</a></div>
           </div>
 
           <div className="new-account">
-            <hr className="line-break"/>
+            <hr className="line-break" />
             <div>Not a member?  <Link to={"/signup"}>Create Account </Link></div>
           </div>
         </div>

@@ -39,7 +39,7 @@ import lombok.ToString;
 @Builder
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-@Table(uniqueConstraints = { @UniqueConstraint(name = "uq_email", columnNames = { "email" }) })
+@Table(name = "users", uniqueConstraints = { @UniqueConstraint(name = "uq_email", columnNames = { "email" }) })
 public class User implements UserDetails {
 
     @Id

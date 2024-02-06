@@ -1,13 +1,15 @@
 package com.example.first.microservice.service.impl;
 
+import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Service;
+
 import com.example.first.microservice.dto.UserDto;
 import com.example.first.microservice.dto.request.AuthRequest;
 import com.example.first.microservice.dto.response.AuthResponse;
 import com.example.first.microservice.service.AuthService;
 import com.example.first.microservice.service.UserService;
+
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
-import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
@@ -25,6 +27,7 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public AuthResponse login(AuthRequest dto) {
+
         return null;
     }
 }

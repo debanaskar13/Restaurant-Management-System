@@ -1,19 +1,16 @@
 package com.example.first.microservice.dto;
 
-import com.example.first.microservice.model.User;
-import jakarta.persistence.Column;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import java.time.Instant;
+
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
-import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
-import org.modelmapper.internal.bytebuddy.implementation.bind.annotation.Empty;
-
-import java.time.Instant;
-
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 @Setter
 @Getter
@@ -32,12 +29,12 @@ public class ItemDto {
 
     @NotBlank(message = "Title cannot be null")
     @NotEmpty(message = "Title cannot be Empty")
-    @Size(min = 3,max = 50,message = "title length should be within 3 and 50 characters")
+    @Size(min = 3, max = 50, message = "title length should be within 3 and 50 characters")
     private String title;
 
     @NotBlank(message = "Slug cannot be null")
     @NotEmpty(message = "Slug cannot be Empty")
-    @Size(min = 3,max = 50,message = "Slug length should be within 3 and 50 characters")
+    @Size(min = 3, max = 50, message = "Slug length should be within 3 and 50 characters")
     private String slug;
     private String summary;
     private String type;
