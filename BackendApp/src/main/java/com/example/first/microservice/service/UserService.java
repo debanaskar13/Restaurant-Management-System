@@ -16,4 +16,6 @@ public interface UserService {
     public String updateUserById(int userId, UserUpdateDto dto);
 
     public String deleteUserById(int userId);
+
+    public boolean existsByEmail(String email);
 }

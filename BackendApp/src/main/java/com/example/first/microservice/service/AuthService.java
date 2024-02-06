@@ -6,7 +6,7 @@ import com.example.first.microservice.dto.response.AuthResponse;
 
 public interface AuthService {
 
-    AuthResponse signup(UserDto dto);
-    AuthResponse login(AuthRequest dto);
+    String signup(UserDto dto);
+    String login(AuthRequest dto);
 
 }

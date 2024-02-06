@@ -1,33 +1,42 @@
 package com.example.first.microservice.service.impl;
 
-import org.modelmapper.ModelMapper;
-import org.springframework.stereotype.Service;
-
 import com.example.first.microservice.dto.UserDto;
 import com.example.first.microservice.dto.request.AuthRequest;
 import com.example.first.microservice.dto.response.AuthResponse;
 import com.example.first.microservice.service.AuthService;
 import com.example.first.microservice.service.UserService;
-
+import com.example.first.microservice.utils.JwtUtils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
 
-    private final ModelMapper modelMapper;
+    private final AuthenticationManager authManager;
     private final UserService userService;
 
+
     @Override
-    public AuthResponse signup(UserDto dto) {
+    public String signup(UserDto dto) {
+        if(userService.existsByEmail(dto.getEmail())){
+            throw new RuntimeException("User Already Exists !!");
+        }
         dto.setActive(true);
         String message = this.userService.createUser(dto);
-        return AuthResponse.builder().message(message).build();
+
+        return JwtUtils.generateToken(dto.getEmail());
+
     }
 
     @Override
-    public AuthResponse login(AuthRequest dto) {
-
-        return null;
+    public String login(AuthRequest dto) {
+        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(dto.email(), dto.password());
+        Authentication authenticate = this.authManager.authenticate(authentication);
+        return JwtUtils.generateToken(((UserDetails)(authenticate.getPrincipal())).getUsername());
     }
 }

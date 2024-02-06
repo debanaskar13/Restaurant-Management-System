@@ -38,7 +38,11 @@ public class SecurityConfig {
     private String allowedOrigin;
 
     private final AuthenticationEntryPoint authenticationEntrypoint;
-    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+
+    @Bean
+    public JwtAuthenticationFilter jwtAuthenticationFilter(){
+        return new JwtAuthenticationFilter(userDetailsService());
+    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -86,7 +90,7 @@ public class SecurityConfig {
         httpSecurity.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         // Add JWT Authentication Filter
-        httpSecurity.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+        httpSecurity.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 
         // Configuration of Method of Security
         // httpSecurity.httpBasic(Customizer.withDefaults());

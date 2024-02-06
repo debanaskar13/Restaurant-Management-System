@@ -1,15 +1,9 @@
 package com.example.first.microservice.dto.response;
 
 
+import com.example.first.microservice.dto.constants.AuthStatus;
 import lombok.*;
 
-@Setter
-@Getter
-@NoArgsConstructor
-@AllArgsConstructor
-@ToString
-@Builder
-public class AuthResponse {
+public record AuthResponse (String jwtToken, AuthStatus status){
 
-    private String message;
 }

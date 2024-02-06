@@ -7,6 +7,7 @@ import axios from "../../api/Axios";
 import {ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import {showToastMessage} from "../../utils/Utils";
+import {REGISTER_URL} from "../../api/ApiUrl";
 import { ErrorIcon, VisibilityIcon } from "../component_util/ComponentUtil";
 
 const USER_REGEX = /^[a-zA-Z][a-zA-Z0-9- ]{3,23}$/;
@@ -94,7 +95,7 @@ function Signup() {
         let message;
 
         try {
-            const response = (await axios.post("/auth/register", JSON.stringify(body), {
+            const response = (await axios.post(REGISTER_URL, JSON.stringify(body), {
                 headers: {
                     "Content-Type": "application/json"
                 }
@@ -104,7 +105,6 @@ function Signup() {
 
             showToastMessage.success(message);
             setSuccess(true);
-
             setTimeout(navigate,6000, "/login");
 
         } catch (error) {

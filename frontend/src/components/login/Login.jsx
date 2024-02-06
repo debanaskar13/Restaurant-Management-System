@@ -4,10 +4,17 @@ import { GoogleLoginButton } from "react-social-login-buttons";
 import { Link, useNavigate } from 'react-router-dom';
 import { EmailSharp, Lock, Person2Rounded } from "@mui/icons-material";
 import { useEffect, useRef, useState } from "react";
+import axios from "../../api/Axios";
+import {LOGIN_URL} from "../../api/ApiUrl";
+import { showToastMessage } from "../../utils/Utils";
+import {ToastContainer} from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 
 
 function Login() {
+
+  const navigate = useNavigate();
 
   const emailRef = useRef();
   const errRef = useRef();
@@ -22,13 +29,41 @@ function Login() {
 
 
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    console.log(email, password)
+
+    if(email && password){
+
+      const body = JSON.stringify({email:email,password:password});
+      
+      try{
+        const response = await axios.post(LOGIN_URL,body,{
+          headers:{
+            "Content-Type": "application/json"
+          }
+        })
+  
+        showToastMessage.success("Welcome Back !!");
+
+        setTimeout( ()=> {navigate("/home")},6000 );
+
+      }catch(error){
+        console.log(error)
+        showToastMessage.failure("Invalid Credentials");
+      }
+
+    }else{
+
+      showToastMessage.failure("Please fill all fields");
+    }
+
+
+
   }
 
   return (
     <>
+    <ToastContainer />
       <div className='container'>
         <div className="login-card">
           <div className="header">
@@ -46,11 +81,11 @@ function Login() {
             <form onSubmit={handleLogin}>
               <div className="input-container">
                 <EmailSharp className="input-icon" />
-                <input ref={emailRef} type="email" id="email" onChange={e => setEmail(e.target.value)} placeholder="Email" />
+                <input ref={emailRef} type="email" id="email" onChange={e => setEmail(e.target.value)} placeholder="Email" required/>
               </div>
               <div className="input-container">
                 <Lock className="input-icon" />
-                <input type="password" id="password" onChange={e => setPassword(e.target.value)} placeholder="Password" />
+                <input type="password" id="password" onChange={e => setPassword(e.target.value)} placeholder="Password" required/>
               </div>
               <div>
                 <button type="submit" className="login-btn">Login</button>

@@ -72,6 +72,11 @@ public class UserServiceImpl implements UserService {
         return "User Deleted Successfully";
     }
 
+    @Override
+    public boolean existsByEmail(String email) {
+        return this.userRepo.findByEmail(email).isPresent();
+    }
+
     private User userDtoToUser(UserDto dto) {
         return this.modelMapper.map(dto, User.class);
     }
